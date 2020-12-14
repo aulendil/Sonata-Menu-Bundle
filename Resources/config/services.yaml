@@ -1,4 +1,4 @@
-
+services:
     prodigious_sonata_menu.factory:
         class: Prodigious\Sonata\MenuBundle\Factory\MenuFactor
 
