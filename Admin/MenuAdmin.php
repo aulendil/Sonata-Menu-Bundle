@@ -8,6 +8,7 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Prodigious\Sonata\MenuBundle\Model\MenuInterface;
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class MenuAdmin extends AbstractAdmin
@@ -17,9 +18,9 @@ class MenuAdmin extends AbstractAdmin
     /**
      * {@inheritdoc}
      */
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $form): void
     {
-        $formMapper
+        $form
             ->with('config.label_menu', ['translation_domain' => 'ProdigiousSonataMenuBundle'])
                 ->add('name', TextType::class,
                     [
@@ -44,15 +45,15 @@ class MenuAdmin extends AbstractAdmin
     /**
      * {@inheritdoc}
      */
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $list): void
     {
-        $listMapper
+        $list
             ->add('id', null, ['label' => 'config.label_id', 'translation_domain' => 'ProdigiousSonataMenuBundle'])
             ->addIdentifier('alias', null, ['label' => 'config.label_alias', 'translation_domain' => 'ProdigiousSonataMenuBundle'])
             ->addIdentifier('name', null, ['label' => 'config.label_name', 'translation_domain' => 'ProdigiousSonataMenuBundle'])
         ;
 
-        $listMapper->add('_action', 'actions', [
+        $list->add('_action', 'actions', [
             'label' => 'config.label_modify',
             'translation_domain' => 'ProdigiousSonataMenuBundle',
             'actions' => [
@@ -66,9 +67,9 @@ class MenuAdmin extends AbstractAdmin
     /**
      * {@inheritdoc}
      */
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
-        $datagridMapper
+        $filter
             ->add('name')
             ->add('alias')
         ;
@@ -77,7 +78,7 @@ class MenuAdmin extends AbstractAdmin
     /**
      * {@inheritdoc}
      */
-    protected function configureRoutes(RouteCollection $collection)
+    protected function configureRoutes(RouteCollectionInterface $collection): void
     {
         $collection->add('items', $this->getRouterIdParameter().'/items');
     }
@@ -85,7 +86,7 @@ class MenuAdmin extends AbstractAdmin
     /**
      * {@inheritdoc}
      */
-    public function configure()
+    public function configure(): void
     {
         $this->setTemplate('edit', '@ProdigiousSonataMenu/CRUD/edit.html.twig');
     }
@@ -93,7 +94,7 @@ class MenuAdmin extends AbstractAdmin
     /**
      * {@inheritdoc}
      */
-    public function toString($object)
+    public function toString($object): string
     {
         return $object instanceof MenuInterface ? $object->getName() : $this->getTranslator()->trans("config.label_menu", array(), 'ProdigiousSonataMenuBundle');
     }
@@ -101,7 +102,7 @@ class MenuAdmin extends AbstractAdmin
     /**
      * @inheritdoc
      */
-    public function prePersist($object)
+    public function prePersist(object $object): void
     {
         parent::prePersist($object);
         foreach ($object->getMenuItems() as $menuItem) {
@@ -112,7 +113,7 @@ class MenuAdmin extends AbstractAdmin
     /**
      * @inheritdoc
      */
-    public function preUpdate($object)
+    public function preUpdate(object $object): void
     {
         parent::prePersist($object);
         foreach ($object->getMenuItems() as $menuItem) {

@@ -4,30 +4,35 @@ namespace Prodigious\Sonata\MenuBundle\Controller;
 
 use Prodigious\Sonata\MenuBundle\Manager\MenuManager;
 use Sonata\AdminBundle\Controller\CRUDController as Controller;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class MenuController extends Controller
 {
-	/**
+    private MenuManager $menuManager;
+
+
+    public function __construct(MenuManager $menuManager)
+    {
+        $this->menuManager = $menuManager;
+    }
+
+
+    /**
 	 * Manager menu items
 	 *
 	 * @param $id
 	 */
-    public function itemsAction($id)
+    public function itemsAction(Request $request, $id)
     {
     	$object = $this->admin->getSubject();
-        $request = $this->getRequest();
 
     	if (empty($object)) {
             throw new NotFoundHttpException(sprintf('unable to find the object with id : %s', $id));
         }
 
-        /** @var MenuManager $menuManager */
-        $menuManager = $this->container->get('prodigious_sonata_menu.manager');
 
         if (null !== $request->get('btn_update') && $request->getMethod() == 'POST') {
 
@@ -37,7 +42,7 @@ class MenuController extends Controller
             if(!empty($items) && !empty(intval($menuId))) {
                 $items = json_decode($items);
 
-                $update = $menuManager->updateMenuTree($menuId, $items);
+                $update = $this->menuManager->updateMenuTree($menuId, $items);
                 /** @var TranslatorInterface $translator */
                 $translator = $this->get('translator');
 
@@ -59,10 +64,10 @@ class MenuController extends Controller
             }
         }
 
-        $menuItemsEnabled = $menuManager->getRootItems($object, MenuManager::STATUS_ENABLED);
-        $menuItemsDisabled = $menuManager->getDisabledItems($object);
+        $menuItemsEnabled = $this->menuManager->getRootItems($object, MenuManager::STATUS_ENABLED);
+        $menuItemsDisabled = $this->menuManager->getDisabledItems($object);
 
-        $menus = $menuManager->findAll();
+        $menus = $this->menuManager->findAll();
 
     	return $this->renderWithExtraParams('@ProdigiousSonataMenu/Menu/menu_edit_items.html.twig', array(
             'menus' => $menus,
