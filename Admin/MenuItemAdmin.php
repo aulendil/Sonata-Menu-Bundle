@@ -15,6 +15,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 class MenuItemAdmin extends AbstractAdmin
 {
@@ -26,6 +27,8 @@ class MenuItemAdmin extends AbstractAdmin
 	protected $menuClass;
 
 	protected $container;
+
+	protected SluggerInterface $slugger;
 
 	public function setContainer(ContainerInterface $container)
 	{
@@ -290,12 +293,7 @@ class MenuItemAdmin extends AbstractAdmin
 		if (empty($url)) {
 
 			$parent = $object->getParent();
-
-			$container = $this->container;
-
-			$slugify = $container->get('slugger');
-
-			$url = $slugify->slug(strip_tags($object->getName()));
+			$url = $this->slugger->slug(strip_tags($object->getName()));
 
 			if ($object->hasParent()) {
 				$url = $parent->getUrl() . '/' . $url;
