@@ -12,9 +12,9 @@
                 <a class="btn btn-xs {% if item.enabled %}btn-warning{% else %}btn-success{% endif %}" href="{{ admin.getChild('prodigious_sonata_menu.admin.menu_item').generateUrl('toggle', {'id':item.id})}}">
                     <strong>
                         {% if item.enabled %}
-                        {{ 'config.label_disabled'|trans({}, 'ProdigiousSonataMenuBundle') }}
+                        {{ 'config.label_disable'|trans({}, 'ProdigiousSonataMenuBundle') }}
                         {% else %}
-                        {{ 'config.label_enabled'|trans({}, 'ProdigiousSonataMenuBundle') }}
+                        {{ 'config.label_enable'|trans({}, 'ProdigiousSonataMenuBundle') }}
                         {% endif %}
                     </strong>
                 </a>

@@ -9,6 +9,7 @@ config.label_url: URL
 config.label_class_attribute: Class
 config.label_target: Nouvel onglet
 config.label_enabled: Activé
+config.label_enable: Activer
 config.label_page: Page
 config.label_parent: Parent
 config.label_children: Sous menu

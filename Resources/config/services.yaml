@@ -1,37 +1,59 @@
 services:
-    prodigious_sonata_menu.factory:
+    
+    
+    prodigious_sonata_menu.factory             :
         class: Prodigious\Sonata\MenuBundle\Factory\MenuFactor
-
-    prodigious_sonata_menu.manager:
-        class: Prodigious\Sonata\MenuBundle\Manager\MenuManager
-        arguments: ["@doctrine.orm.entity_manager"]
-        public: true
-
-    prodigious_sonata_menu.repo:
-        class: Prodigious\Sonata\MenuBundle\Repository\MenuRepository
-        factory: ['@doctrine.orm.entity_manager', 'getRepository']
+    
+    prodigious_sonata_menu.manager             :
+        class    : Prodigious\Sonata\MenuBundle\Manager\MenuManager
+        arguments: [ "@doctrine.orm.entity_manager" ]
+        public   : true
+    
+    prodigious_sonata_menu.repo                :
+        class    : Prodigious\Sonata\MenuBundle\Repository\MenuRepository
+        factory  : [ '@doctrine.orm.entity_manager', 'getRepository' ]
         arguments:
             - Prodigious\Sonata\MenuBundle\Model\MenuInterface
-
-    prodigious_sonata_menu_item.repo:
-        class: Prodigious\Sonata\MenuBundle\Repository\MenuItemRepository
-        factory: ['@doctrine.orm.entity_manager', 'getRepository']
+    
+    prodigious_sonata_menu_item.repo           :
+        class    : Prodigious\Sonata\MenuBundle\Repository\MenuItemRepository
+        factory  : [ '@doctrine.orm.entity_manager', 'getRepository' ]
         arguments:
             - Prodigious\Sonata\MenuBundle\Model\MenuItemInterface
-
-    prodigious_sonata_menu.admin.menu:
-        class: '%sonata_menu.admins.menu%'
-        arguments: [~, '%sonata_menu.entity.menu%', ProdigiousSonataMenuBundle:Menu]
-        tags:
+    
+    prodigious_sonata_menu.controller.menu     :
+        class        : Prodigious\Sonata\MenuBundle\Controller\MenuController
+        arguments    : [ '@prodigious_sonata_menu.manager' , '@sonata.admin.route.default_generator' ]
+        public       : true
+        autowire     : true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        tags         :
+            - { name: 'container.service_subscriber' }
+    
+    prodigious_sonata_menu.controller.menu_item:
+        class        : Prodigious\Sonata\MenuBundle\Controller\MenuItemController
+        arguments    : [ '@doctrine.orm.entity_manager' , '@sonata.admin.route.default_generator' ]
+        public       : true
+        autowire     : true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        tags         :
+            - { name: 'container.service_subscriber' }
+    
+    
+    prodigious_sonata_menu.admin.menu          :
+        class    : '%sonata_menu.admins.menu%'
+        arguments: [ ~, '%sonata_menu.entity.menu%', prodigious_sonata_menu.controller.menu ]
+        tags     :
             - { name: sonata.admin, manager_type: orm, label: config.label_menu, group: config.label_menu, label_catalogue: ProdigiousSonataMenuBundle }
-        calls:
-            - [ setTranslationDomain, ['ProdigiousSonataMenuBundle']]
-            - [ addChild, ['@prodigious_sonata_menu.admin.menu_item', 'menu']]
-
-    prodigious_sonata_menu.admin.menu_item:
-        class: '%sonata_menu.admins.menu_item%'
-        arguments: [~, '%sonata_menu.entity.menu_item%', ProdigiousSonataMenuBundle:MenuItem, '%sonata_menu.entity.menu%']
-        tags:
+        calls    :
+            - [ setTranslationDomain, [ 'ProdigiousSonataMenuBundle' ] ]
+            - [ addChild, [ '@prodigious_sonata_menu.admin.menu_item', 'menu' ] ]
+    
+    prodigious_sonata_menu.admin.menu_item     :
+        class    : '%sonata_menu.admins.menu_item%'
+        arguments: [ ~, '%sonata_menu.entity.menu_item%', prodigious_sonata_menu.controller.menu_item, '%sonata_menu.entity.menu%' ]
+        tags     :
             - { name: sonata.admin, manager_type: orm, label: config.label_menu_item, group: config.label_menu, show_in_dashboard: false, label_catalogue: ProdigiousSonataMenuBundle }
-        calls:
-            - [ setTranslationDomain, ['ProdigiousSonataMenuBundle']]
+        calls    :
+            - [ setTranslationDomain, [ 'ProdigiousSonataMenuBundle' ] ]
+            - [ setContainer, [ '@service_container' ] ]
