@@ -57,3 +57,4 @@ services:
         calls    :
             - [ setTranslationDomain, [ 'ProdigiousSonataMenuBundle' ] ]
             - [ setContainer, [ '@service_container' ] ]
+            - [ setSlugger, [ '@slugger' ] ]

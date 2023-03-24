@@ -30,6 +30,9 @@ class MenuItemAdmin extends AbstractAdmin
 
 	protected SluggerInterface $slugger;
 
+	public function setSlugger(SluggerInterface $slugger){
+		$this->slugger = $slugger;
+	}
 	public function setContainer(ContainerInterface $container)
 	{
 		$this->container = $container;
