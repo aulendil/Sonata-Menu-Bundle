@@ -293,12 +293,11 @@ class MenuItemAdmin extends AbstractAdmin
 
 			$container = $this->container;
 
-			$slugify = $container->get('sonata.core.slugify.cocur');
+			$slugify = $container->get('slugger');
 
-			$url = $slugify->slugify(strip_tags($object->getName()));
+			$url = $slugify->slug(strip_tags($object->getName()));
 
 			if ($object->hasParent()) {
-				$parent = $object->getParent();
 				$url = $parent->getUrl() . '/' . $url;
 			} else {
 				$url = '/' . $url;
