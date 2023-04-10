@@ -18,10 +18,10 @@ abstract class MenuItem implements MenuItemInterface
 	protected string $name;
 
 	#[ORM\Column(name: 'url', type: 'string', length: 255, nullable: TRUE)]
-	protected ?string $url;
+	protected ?string $url = NULL;
 
 	#[ORM\Column(name: 'class_attribute', type: 'string', length: 255, nullable: TRUE)]
-	protected ?string $classAttribute;
+	protected ?string $classAttribute = NULL;
 
 	#[ORM\Column(name: 'position', type: 'smallint', nullable: TRUE, options: ['unsigned' => TRUE])]
 	protected int $position;
@@ -33,12 +33,12 @@ abstract class MenuItem implements MenuItemInterface
 	#[ORM\Column(name: 'enabled', type: 'boolean', nullable: TRUE, options: ['default' => TRUE])]
 	protected bool $enabled;
 
-	protected $page;
+	protected $page = NULL;
 
 
 	#[ORM\ManyToOne(targetEntity: MenuItemInterface::class, cascade: ['persist'], inversedBy: 'children')]
 	#[ORM\JoinColumn(name: 'parent', referencedColumnName: 'id', nullable: TRUE, onDelete: 'SET NULL')]
-	protected ?MenuItemInterface $parent;
+	protected ?MenuItemInterface $parent = NULL;
 
 
 	#[ORM\OneToMany(mappedBy: 'parent', targetEntity: MenuItemInterface::class, cascade: ['all'])]

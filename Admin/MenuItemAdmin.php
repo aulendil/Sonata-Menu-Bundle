@@ -2,20 +2,19 @@
 
 namespace Prodigious\Sonata\MenuBundle\Admin;
 
-use Prodigious\Sonata\MenuBundle\Entity\MenuItem;
-use Prodigious\Sonata\MenuBundle\Model\MenuItemInterface;
-use Sonata\AdminBundle\Admin\AbstractAdmin;
-use Sonata\AdminBundle\Datagrid\DatagridMapper;
-use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Form\Type\ModelType;
-use Sonata\AdminBundle\Route\RouteCollectionInterface;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpKernel\Kernel;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Form\Type\ModelType;
+use Sonata\AdminBundle\Datagrid\DatagridMapper;
+use Prodigious\Sonata\MenuBundle\Entity\MenuItem;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Prodigious\Sonata\MenuBundle\Model\MenuItemInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class MenuItemAdmin extends AbstractAdmin
 {
@@ -30,9 +29,11 @@ class MenuItemAdmin extends AbstractAdmin
 
 	protected SluggerInterface $slugger;
 
-	public function setSlugger(SluggerInterface $slugger){
+	public function setSlugger(SluggerInterface $slugger)
+	{
 		$this->slugger = $slugger;
 	}
+
 	public function setContainer(ContainerInterface $container)
 	{
 		$this->container = $container;
@@ -304,7 +305,7 @@ class MenuItemAdmin extends AbstractAdmin
 				$url = '/' . $url;
 			}
 
-			$object->setUrl($url);
+			$object->setUrl(strtolower($url));
 		}
 	}
 
