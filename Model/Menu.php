@@ -80,10 +80,8 @@ abstract class Menu implements MenuInterface
 	}
 
 
-	/**
-	 * @return ArrayCollection<MenuItemInterface>
-	 */
-	public function getMenuItems(): ArrayCollection
+
+	public function getMenuItems(): Collection
 	{
 		return $this->menuItems;
 	}

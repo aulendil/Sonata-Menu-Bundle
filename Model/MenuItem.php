@@ -198,7 +198,7 @@ abstract class MenuItem implements MenuItemInterface
 	}
 
 
-	public function getChildren(): ArrayCollection
+	public function getChildren(): Collection
 	{
 		return $this->children;
 	}
@@ -231,7 +231,7 @@ abstract class MenuItem implements MenuItemInterface
 		return !is_null($this->parent);
 	}
 
-	public function getActiveChildren(): ArrayCollection
+	public function getActiveChildren(): Collection
 	{
 		$children = [];
 
