@@ -2,7 +2,6 @@
 
 namespace Prodigious\Sonata\MenuBundle\Model;
 
-use stdClass;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -34,7 +33,7 @@ abstract class MenuItem implements MenuItemInterface
 	#[ORM\Column(name: 'enabled', type: 'boolean', nullable: TRUE, options: ['default' => TRUE])]
 	protected bool $enabled;
 
-	protected ?stdClass $page;
+	protected $page;
 
 
 	#[ORM\ManyToOne(targetEntity: MenuItemInterface::class, cascade: ['persist'], inversedBy: 'children')]
@@ -149,12 +148,12 @@ abstract class MenuItem implements MenuItemInterface
 		return $this->enabled;
 	}
 
-	public function getPage(): ?stdClass
+	public function getPage()
 	{
 		return $this->page;
 	}
 
-	public function setPage(?stdClass $page): MenuItemInterface
+	public function setPage($page): MenuItemInterface
 	{
 		$this->page = $page;
 
